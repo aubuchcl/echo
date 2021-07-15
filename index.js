@@ -33,7 +33,12 @@ app.all("/echo", (req, res) => {
     // const toStdOut = JSON.stringify(req.body)
     // res.json(req.body);
     // process.stdout.write(toStdOut)
+    let x = JSON.stringify(req.body, null, 2))
+    fs.writeFileSync("/path", x);
+    console.log(x);
+    console.log("old");
     console.log(req.body);
+    
     res.end();
   } else if (req.method === "PUT") {
     res.status(200);
