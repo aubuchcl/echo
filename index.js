@@ -31,11 +31,11 @@ app.all("/echo", (req, res) => {
     res.end();
   } else if (req.method === "POST") {
     res.status(200);
-    let x = JSON.stringify(req, null, 2);
+    let x = JSON.stringify(req.body, null, 2);
     fs.writeFileSync("/path", x);
     console.log(x);
-    console.log("old");
-    console.log(req.body);
+    console.log(JSON.stringify(req.headers, null, 2));
+    console.log(JSON.stringify(req.originalUrl, null, 2));
     res.end();
   } else if (req.method === "PUT") {
     res.status(200);
