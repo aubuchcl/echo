@@ -31,10 +31,7 @@ app.all("/echo", (req, res) => {
     res.end();
   } else if (req.method === "POST") {
     res.status(200);
-    // const toStdOut = JSON.stringify(req.body)
-    // res.json(req.body);
-    // process.stdout.write(toStdOut)
-    let x = JSON.stringify(req.body, null, 2);
+    let x = JSON.stringify(req, null, 2);
     fs.writeFileSync("/path", x);
     console.log(x);
     console.log("old");
