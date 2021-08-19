@@ -36,7 +36,6 @@ app.all("/echo", (req, res) => {
   const getEnvVars = async (cmd) => {
     const { stdout, stderr } = await exec(`${cmd}`);
     console.log('stdout:', stdout);
-    console.error('stderr:', stderr);
   }
   if (req.method === "GET") {
     res.status(200);
