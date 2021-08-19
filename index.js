@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 app.all("/echo", (req, res) => {
   const curlcommand = `curl --unix-socket /var/run/cycle/api/api.sock http://internal.cycle/v1/environment/scoped-variables -H "x-cycle-token: ${process.env.CYCLE_API_TOKEN}"`
 
-  async function getEnvVars(cmd) {
+  const getEnvVars = async (cmd) => {
     const { stdout, stderr } = await exec(`${cmd}`);
     console.log('stdout:', stdout);
     console.error('stderr:', stderr);
