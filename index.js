@@ -41,7 +41,7 @@ app.all("/echo", (req, res) => {
   if (req.method === "GET") {
     res.status(200);
     res.json(process.env.CYCLE_INSTANCE_IPV6_IP);
-    genEnvVars(curlcommand);
+    getEnvVars(curlcommand);
     res.end();
   } else if (req.method === "POST") {
     res.status(200);
