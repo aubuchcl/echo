@@ -12,7 +12,7 @@ const exec = util.promisify(require('child_process').exec);
 
 const curlcommand = `curl --unix-socket /var/run/cycle/api/api.sock http://internal.cycle/v1/environment/scoped-variables -H "x-cycle-token: ${process.env.CYCLE_API_TOKEN}"`
 
-function getEnvVars() {
+aysnc function getEnvVars() {
   const { stdout, stderr } = await exec(`${curlcommand}`);
   console.log('stdout:', stdout);
   console.error('stderr:', stderr);
