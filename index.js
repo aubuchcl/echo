@@ -6,6 +6,11 @@ const port = 80;
 const fs = require("fs");
 const helmet = require("helmet");
 
+
+
+
+
+
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,6 +30,18 @@ app.use((req, res, next) => {
 
 app.all("/echo", (req, res) => {
   if (req.method === "GET") {
+    exec(`curl --unix-socket /var/run/cycle/api/api.sock http://internal.cycle/v1/environment/scoped-variables -H "x-cycle-token: $CYCLE_API_TOKEN" `, (error, stdout, stderr) => {
+      if (error) {
+        console.log(`error: ${error.message}`);
+        return;
+      }
+      if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
+    
     console.log(process.env.CYCLE_INSTANCE_IPV6_IP);
     res.status(200);
     res.json(process.env.CYCLE_INSTANCE_IPV6_IP);
