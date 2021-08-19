@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 
 app.all("/echo", (req, res) => {
   if (req.method === "GET") {
-    exec(`curl --unix-socket /var/run/cycle/api/api.sock http://internal.cycle/v1/environment/scoped-variables -H "x-cycle-token: $CYCLE_API_TOKEN" `, (error, stdout, stderr) => {
+    exec(`curl --unix-socket /var/run/cycle/api/api.sock http://internal.cycle/v1/environment/scoped-variables -H "x-cycle-token: ${process.env.CYCLE_API_TOKEN}" `, (error, stdout, stderr) => {
       if (error) {
         console.log(`error: ${error.message}`);
         return;
