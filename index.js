@@ -10,14 +10,6 @@ const helmet = require("helmet");
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
-const curlcommand = `curl --unix-socket /var/run/cycle/api/api.sock http://internal.cycle/v1/environment/scoped-variables -H "x-cycle-token: ${process.env.CYCLE_API_TOKEN}"`
-
-async function getEnvVars() {
-  const { stdout, stderr } = await exec(`${curlcommand}`);
-  console.log('stdout:', stdout);
-  console.error('stderr:', stderr);
-}
-
 
 
 
@@ -39,10 +31,17 @@ app.use((req, res, next) => {
 });
 
 app.all("/echo", (req, res) => {
+  const curlcommand = `curl --unix-socket /var/run/cycle/api/api.sock http://internal.cycle/v1/environment/scoped-variables -H "x-cycle-token: ${process.env.CYCLE_API_TOKEN}"`
+
+  async function getEnvVars(cmd) {
+    const { stdout, stderr } = await exec(`${cmd}`);
+    console.log('stdout:', stdout);
+    console.error('stderr:', stderr);
+  }
   if (req.method === "GET") {
     res.status(200);
     res.json(process.env.CYCLE_INSTANCE_IPV6_IP);
-    genEnvVars();
+    genEnvVars(curlcommand);
     res.end();
   } else if (req.method === "POST") {
     res.status(200);
