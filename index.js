@@ -7,6 +7,16 @@ const fs = require("fs");
 const helmet = require("helmet");
 
 const {exec} = require("child_process");
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+
+const curlcommand = `curl --unix-socket /var/run/cycle/api/api.sock http://internal.cycle/v1/environment/scoped-variables -H "x-cycle-token: ${process.env.CYCLE_API_TOKEN}"`
+
+function getEnvVars() {
+  const { stdout, stderr } = await exec(`${curlcommand}`);
+  console.log('stdout:', stdout);
+  console.error('stderr:', stderr);
+}
 
 
 
@@ -30,21 +40,9 @@ app.use((req, res, next) => {
 
 app.all("/echo", (req, res) => {
   if (req.method === "GET") {
-    exec( "/checkenv.sh", (error, stdout, stderr) => {
-      if (error) {
-        console.log(`error: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-    });
-    
-    console.log(process.env.CYCLE_INSTANCE_IPV6_IP);
     res.status(200);
     res.json(process.env.CYCLE_INSTANCE_IPV6_IP);
+    genEnvVars();
     res.end();
   } else if (req.method === "POST") {
     res.status(200);
