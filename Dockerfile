@@ -7,4 +7,5 @@ RUN npm install
 
 COPY . .
 RUN chmod +x checkenv.sh
+RUN chmod +x jetostr.sh
 CMD ["node", "index.js"]
