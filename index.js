@@ -29,6 +29,31 @@ app.use((req, res, next) => {
   );
   next();
 });
+app.all("/environment", (req, res) => {
+  const getEnvironment = `curl --unix-socket /var/run/cycle/api/api.sock http://internal.cycle/v1/environment -H "x-cycle-token: ${process.env.CYCLE_API_TOKEN}"`
+
+  const getEnvVars = async (cmd) => {
+    const { stdout, stderr } = await exec(`${cmd}`);
+    console.log('stdout:', stdout);
+  }
+  if (req.method === "GET") {
+    res.status(200);
+    res.json(getEnvVars(getEnvironment));
+    res.end();
+  } else if (req.method === "POST") {
+    res.status(200);
+    let x = JSON.stringify(req.body, null, 2);
+    fs.writeFileSync("/path", x);
+    console.log(x);
+    console.log(JSON.stringify(req.headers, null, 2));
+    console.log(JSON.stringify(req.originalUrl, null, 2));
+    res.end();
+  } else if (req.method === "PUT") {
+    res.status(200);
+    res.json({ working: true });
+    res.end();
+  }
+});
 
 app.all("/echo", (req, res) => {
   const curlcommand = `curl --unix-socket /var/run/cycle/api/api.sock http://internal.cycle/v1/environment/scoped-variables -H "x-cycle-token: ${process.env.CYCLE_API_TOKEN}"`
