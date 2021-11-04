@@ -72,12 +72,12 @@ app.all("/echo", (req, res) => {
     res.status(200);
     console.log("Logging raw body:", req.body);
     console.log("Trying to dump into string:", String(req.body));
-    (async (req) => {
+
       console.log("Blob:", await req.blob());
       console.log("JSON:", await req.json());
       console.log("Text:", await req.text());
-      count = 1
-    })();
+
+
     while(count < 1){ console.log("waiting")}
     count = 0
     let x = JSON.stringify(req.body, null, 2);
