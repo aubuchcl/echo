@@ -73,9 +73,9 @@ app.all("/echo", (req, res) => {
     console.log("Logging raw body:", req.body);
     console.log("Trying to dump into string:", String(req.body));
 
-      console.log("Blob:", await req.blob());
-      console.log("JSON:", await req.json());
-      console.log("Text:", await req.text());
+      console.log("Blob:" + await req.blob());
+      console.log("JSON:" + await req.json());
+      console.log("Text:" + await req.text());
 
 
     while(count < 1){ console.log("waiting")}
