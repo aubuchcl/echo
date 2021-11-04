@@ -42,6 +42,7 @@ app.all("/environment", (req, res) => {
     res.end();
   } else if (req.method === "POST") {
     res.status(200);
+    console.log(String(req.body))
     let x = JSON.stringify(req.body, null, 2);
     fs.writeFileSync("/path", x);
     console.log(x);
