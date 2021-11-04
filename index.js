@@ -14,7 +14,8 @@ const exec = util.promisify(require('child_process').exec);
 
 
 app.use(helmet());
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
+app.use(express.raw());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
@@ -42,7 +43,6 @@ app.all("/environment", (req, res) => {
     res.end();
   } else if (req.method === "POST") {
     res.status(200);
-    console.log(String(req.body))
     let x = JSON.stringify(req.body, null, 2);
     fs.writeFileSync("/path", x);
     console.log(x);
@@ -70,6 +70,8 @@ app.all("/echo", (req, res) => {
     res.end();
   } else if (req.method === "POST") {
     res.status(200);
+    console.log("Logging raw body:", req.body);
+    console.log("Trying to dump into string:", String(req.body));
     let x = JSON.stringify(req.body, null, 2);
     fs.writeFileSync("/path", x);
     console.log(x);
