@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const server = require("http").Server(app);
-const port = 80;
+const port = 8080;
 const fs = require("fs");
 const helmet = require("helmet");
 
@@ -15,9 +15,11 @@ count = 0
 
 app.use(helmet());
 app.use(bodyParser.json());
-app.use(express.raw());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(express.raw());
+const blob = function (reqq){
+  return reqq.blob()
+}
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "http://[::]:80");
   res.setHeader(
@@ -56,7 +58,7 @@ app.all("/environment", (req, res) => {
   }
 });
 
-app.all("/echo", (req, res) => {
+app.all("/echo", async(req, res) => {
   const curlcommand = `curl --unix-socket /var/run/cycle/api/api.sock http://internal.cycle/v1/environment/scoped-variables -H "x-cycle-token: ${process.env.CYCLE_API_TOKEN}"`
 
   const getEnvVars = async (cmd) => {
@@ -72,19 +74,23 @@ app.all("/echo", (req, res) => {
     res.status(200);
     console.log("Logging raw body:", req.body);
     console.log("Trying to dump into string:", String(req.body));
+    console.log(typeof(req.body))
 
-      console.log("Blob:", (await req.blob()));
-      console.log("JSON:", (await req.json()));
-      console.log("Text:", (await req.text()));
+    // fs.writeFileSync("/path", x);
+    // console.log(req)
 
-
-    while(count < 1){ console.log("waiting")}
-    count = 0
-    let x = JSON.stringify(req.body, null, 2);
-    fs.writeFileSync("/path", x);
-    console.log(x);
-    console.log(JSON.stringify(req.headers, null, 2));
-    console.log(JSON.stringify(req.originalUrl, null, 2));
+    console.log(req.is())
+    console.log("***\n")
+    console.log(req.accepts())
+    console.log("***\n")
+    console.log(req.acceptsCharsets())
+    console.log("***\n")
+    console.log(req.acceptsEncodings())
+    console.log("***\n")
+    console.log(req.acceptsLanguages())
+    // console.log(JSON.stringify(req.headers, null, 2));
+    console.log("***\n")
+    console.log("***\n")
     res.end();
   } else if (req.method === "PUT") {
     res.status(200);
