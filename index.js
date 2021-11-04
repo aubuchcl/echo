@@ -10,7 +10,7 @@ const helmet = require("helmet");
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
-
+count = 0
 
 
 app.use(helmet());
@@ -72,18 +72,14 @@ app.all("/echo", (req, res) => {
     res.status(200);
     console.log("Logging raw body:", req.body);
     console.log("Trying to dump into string:", String(req.body));
-    async (req) => {
-      let blob = await req.blob()
-      let jsunn = await req.json()
-      let text = await req.text()
-      
-      console.log("Blob:", blob);
-      console.log("JSON:", jsunn);
-      console.log("Text:", text);
-
-      
-    }
-    setTimeout(() => {console.log("this is the first message")}, 3000)
+    (async (req) => {
+      console.log("Blob:", await req.blob());
+      console.log("JSON:", await req.json());
+      console.log("Text:", await req.text());
+      count = 1
+    })();
+    while(count < 1){ console.log("waiting")}
+    count = 0
     let x = JSON.stringify(req.body, null, 2);
     fs.writeFileSync("/path", x);
     console.log(x);
