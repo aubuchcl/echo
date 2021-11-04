@@ -14,7 +14,7 @@ const exec = util.promisify(require('child_process').exec);
 
 
 app.use(helmet());
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 app.use(express.raw());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -72,6 +72,18 @@ app.all("/echo", (req, res) => {
     res.status(200);
     console.log("Logging raw body:", req.body);
     console.log("Trying to dump into string:", String(req.body));
+    async (req) => {
+      let blob = await req.blob()
+      let jsunn = await req.json()
+      let text = await req.text()
+      
+      console.log("Blob:", blob);
+      console.log("JSON:", jsunn);
+      console.log("Text:", text);
+
+      
+    }
+    setTimeout(() => {console.log("this is the first message")}, 3000)
     let x = JSON.stringify(req.body, null, 2);
     fs.writeFileSync("/path", x);
     console.log(x);
