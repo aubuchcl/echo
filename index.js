@@ -73,24 +73,7 @@ app.all("/echo", async(req, res) => {
   } else if (req.method === "POST") {
     res.status(200);
     console.log("Logging raw body:", req.body);
-    console.log("Trying to dump into string:", String(req.body));
-    console.log(typeof(req.body))
-
-    // fs.writeFileSync("/path", x);
-    // console.log(req)
-
-    console.log(req.is())
-    console.log("***\n")
-    console.log(req.accepts())
-    console.log("***\n")
-    console.log(req.acceptsCharsets())
-    console.log("***\n")
-    console.log(req.acceptsEncodings())
-    console.log("***\n")
-    console.log(req.acceptsLanguages())
-    // console.log(JSON.stringify(req.headers, null, 2));
-    console.log("***\n")
-    console.log("***\n")
+    
     res.end();
   } else if (req.method === "PUT") {
     res.status(200);
